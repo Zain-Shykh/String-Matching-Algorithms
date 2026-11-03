@@ -9,8 +9,13 @@ pi = compute_prefix_function(ALARM)
 print("pi =", pi)
 
 all_shifts = []
-# TODO: loop over read_chunks(FILE, 4096). Keep track of q and of the offset
-#       (how many characters came before this chunk). Call kmp_resume on each chunk.
+q = 0
+offset = 0
+
+for chunk in read_chunks(FILE, 4096):
+    q, shifts, _ = kmp_resume(chunk, ALARM, pi, q, offset)
+    all_shifts.extend(shifts)
+    offset += len(chunk)
 
 print("Alarm count:", len(all_shifts))
 print("First 10 shifts:", all_shifts[:10])
